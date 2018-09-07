@@ -12,12 +12,12 @@
 */
 
 Route::get('/', 'ProductController@index');
-Route::get('/{id}', 'ProductController@details');
+Route::get('/details/{id}', 'ProductController@details');
 
 Route::get('/create', 'ProductController@create');
 Route::post('/add', 'ProductController@add');
 
-Route::get('/{id}/edit', 'ProductController@edit');
-Route::put('/{id}/update', 'ProductController@update');
+Route::get('edit/{id}', 'ProductController@edit');
+Route::put('/update/{id}', 'ProductController@update');
 
-Route::delete('{id}/delete', 'ProductController@delete');
+Route::delete('delete/{id}', 'ProductController@delete');
