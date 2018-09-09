@@ -37,8 +37,8 @@ class ProductTest extends TestCase
      */
     public function testProductEdit()
     {
-        $response = $this->get('/edit/123');
-        $response->assertStatus(200);
+        $response = $this->get('/edit/12345');
+        $response->assertStatus(404);
     }
 
     /**
@@ -48,7 +48,7 @@ class ProductTest extends TestCase
      */
     public function testProductDetails()
     {
-        $response = $this->get('/details/123');
-        $response->assertStatus(200);
+        $response = $this->get('/details/67890');
+        $response->assertStatus(404);
     }
 }
