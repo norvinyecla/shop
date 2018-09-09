@@ -28,7 +28,7 @@ class ProductController extends Controller
         return view('product.edit');
     }
 
-    public function add(Request $request)
+    public function save(Request $request, Product $product)
     {
         $validatedData = $request->validate(
             [
@@ -39,7 +39,6 @@ class ProductController extends Controller
             ]
         );
 
-        $product = new Product;
         $product->name = $request->name;
         $product->description = $request->description;
         $product->price = $request->price;
@@ -50,12 +49,18 @@ class ProductController extends Controller
         }
 
         $product->save();
-        return response()->json($product);        
+        return response()->json($product);
     }
 
-    public function update(int $id)
+    public function add(Request $request)
     {
-        return view('product.edit');
+        return $this->save($request, new Product);
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $product = Product::findOrFail($id);
+        return $this->save($request, $product);
     }
 
     public function delete(int $id)
