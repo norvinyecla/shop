@@ -71,6 +71,8 @@ class ProductController extends Controller
 
     public function delete(int $id)
     {
-        return view('product.list');
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return response()->json(["message" => "Product {$id} has been deleted."]);
     }
 }
