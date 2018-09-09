@@ -15,4 +15,4 @@ use Illuminate\Http\Request;
 
 Route::post('/add', 'ProductController@add');
 Route::put('/update/{id}', 'ProductController@update');
-Route::delete('delete/{id}', 'ProductController@delete');
+Route::delete('/delete/{id}', 'ProductController@delete');
