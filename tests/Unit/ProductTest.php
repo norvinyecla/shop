@@ -10,6 +10,15 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductTest extends TestCase
 {
+    use RefreshDatabase;
+
+    public $readyData = [
+        'name' => 'test name',
+        'price' => 100,
+        'description' => 'test description',
+        'picture' => 'test'
+    ];
+    
     /**
      * Create new product with no fields
      *
@@ -42,12 +51,7 @@ class ProductTest extends TestCase
      */
     public function testCreateNewProductInvalidPicture()
     {
-        $data = [
-            'name' => 'test name',
-            'price' => 100,
-            'description' => 'test description',
-            'picture' => 'test'
-        ];
+        $data = $this->readyData;
 
         $response = $this->json('POST', '/api/add', $data);
         $response->assertStatus(422);
@@ -62,12 +66,9 @@ class ProductTest extends TestCase
     {
         $file = UploadedFile::fake()->image('product.jpg');
 
-        $data = [
-            'name' => 'test name',
-            'price' => 100,
-            'description' => ' ',
-            'picture' => $file
-        ];
+        $data = $this->readyData;
+        $data['picture'] = $file;
+        $data['description'] = ' ';
 
         $response = $this->json('POST', '/api/add', $data);
         $response->assertStatus(422);
@@ -82,12 +83,10 @@ class ProductTest extends TestCase
     {
         $file = UploadedFile::fake()->image('product.jpg');
 
-        $data = [
-            'name' => ' ',
-            'price' => 100,
-            'description' => 'test description',
-            'picture' => $file
-        ];
+        $data = $this->readyData;
+        $data['picture'] = $file;
+        $data['name'] = ' ';
+
 
         $response = $this->json('POST', '/api/add', $data);
         $response->assertStatus(422);
@@ -104,12 +103,8 @@ class ProductTest extends TestCase
 
         $file = UploadedFile::fake()->image('product.bmp');
 
-        $data = [
-            'name' => 'test name',
-            'price' => 100,
-            'description' => 'test description',
-            'picture' => $file
-        ];
+        $data = $this->readyData;
+        $data['picture'] = $file;
 
         $response = $this->json('POST', '/api/add', $data);
         $response->assertStatus(422);
@@ -126,12 +121,8 @@ class ProductTest extends TestCase
 
         $file = UploadedFile::fake()->image('product.svg');
 
-        $data = [
-            'name' => 'test name',
-            'price' => 100,
-            'description' => 'test description',
-            'picture' => $file
-        ];
+        $data = $this->readyData;
+        $data['picture'] = $file;
 
         $response = $this->json('POST', '/api/add', $data);
         $response->assertStatus(422);
@@ -148,12 +139,8 @@ class ProductTest extends TestCase
 
         $file = UploadedFile::fake()->image('product.jpeg');
 
-        $data = [
-            'name' => 'test name',
-            'price' => 100,
-            'description' => 'test description',
-            'picture' => $file
-        ];
+        $data = $this->readyData;
+        $data['picture'] = $file;
 
         $response = $this->json('POST', '/api/add', $data);
         $response->assertStatus(200);
@@ -170,12 +157,8 @@ class ProductTest extends TestCase
 
         $file = UploadedFile::fake()->image('product.jpg');
 
-        $data = [
-            'name' => 'test name',
-            'price' => 100,
-            'description' => 'test description',
-            'picture' => $file
-        ];
+        $data = $this->readyData;
+        $data['picture'] = $file;
 
         $response = $this->json('POST', '/api/add', $data);
         $response->assertStatus(200);
@@ -192,18 +175,14 @@ class ProductTest extends TestCase
 
         $file = UploadedFile::fake()->image('product.gif');
 
-        $data = [
-            'name' => 'test name',
-            'price' => 100,
-            'description' => 'test description',
-            'picture' => $file
-        ];
+        $data = $this->readyData;
+        $data['picture'] = $file;
 
         $response = $this->json('POST', '/api/add', $data);
         $response->assertStatus(200);
     }
 
-     /**
+    /**
      * Create new product with valid image (png)
      *
      * @return void
@@ -214,15 +193,31 @@ class ProductTest extends TestCase
 
         $file = UploadedFile::fake()->image('product.png');
 
-        $data = [
-            'name' => 'test name',
-            'price' => 100,
-            'description' => 'test description',
-            'picture' => $file
-        ];
+        $data = $this->readyData;
+        $data['picture'] = $file;
 
         $response = $this->json('POST', '/api/add', $data);
         $response->assertStatus(200);
+    }
+
+    /**
+     * Create new product with valid image (png)
+     *
+     * @return void
+     */
+    public function testEditProduct()
+    {
+        Storage::fake('uploads');
+
+        $file = UploadedFile::fake()->image('product.png');
+
+        $data = $this->readyData;
+        $data['picture'] = $file;
+
+        $response = $this->json('POST', '/api/add', $data);
+        $response->assertStatus(200);
+
+        $id = $response->json()['id'];
     }
     
 }
