@@ -12,3 +12,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('/add', 'ProductController@add');
+Route::put('/update/{id}', 'ProductController@update');
+Route::delete('delete/{id}', 'ProductController@delete');

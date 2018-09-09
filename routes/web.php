@@ -13,11 +13,6 @@
 
 Route::get('/', 'ProductController@index');
 Route::get('/details/{id}', 'ProductController@details');
-
 Route::get('/create', 'ProductController@create');
-Route::post('/add', 'ProductController@add');
-
 Route::get('edit/{id}', 'ProductController@edit');
-Route::put('/update/{id}', 'ProductController@update');
 
-Route::delete('delete/{id}', 'ProductController@delete');
