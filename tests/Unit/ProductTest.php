@@ -60,7 +60,7 @@ class ProductTest extends TestCase
      */
     public function testCreateNewProductWithBMPImage()
     {
-        Storage::fake('avatars');
+        Storage::fake('uploads');
 
         $file = UploadedFile::fake()->image('product.bmp');
 
@@ -82,7 +82,7 @@ class ProductTest extends TestCase
      */
     public function testCreateNewProductWithSVGImage()
     {
-        Storage::fake('avatars');
+        Storage::fake('uploads');
 
         $file = UploadedFile::fake()->image('product.svg');
 
@@ -164,7 +164,7 @@ class ProductTest extends TestCase
     }
 
      /**
-     * Create new product with valid image (gif)
+     * Create new product with valid image (png)
      *
      * @return void
      */
