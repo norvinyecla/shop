@@ -322,5 +322,34 @@ class ProductTest extends TestCase
             ]
         );
     }
-  
+
+    /**
+     * Test delete product with an invalid id
+     *
+     * @return void
+     */
+    public function testDeleteProductWithInvalidId()
+    {
+        $id = 99999;
+        $response = $this->delete("/api/delete/{$id}");
+        $response->assertStatus(404);
+    }
+
+    /**
+     * Test delete product with a valid id
+     *
+     * @return void
+     */
+    public function testEditProductWithValidId()
+    {
+        $id = $this->createProductForEditTesting();
+
+        $response = $this->delete("/api/delete/{$id}");
+        $response->assertStatus(200);
+        $response->assertJson(
+            [
+                "message" => "Product {$id} has been deleted."
+            ]
+        );
+    }
 }
