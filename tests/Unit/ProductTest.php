@@ -201,23 +201,126 @@ class ProductTest extends TestCase
     }
 
     /**
-     * Create new product with valid image (png)
+     * Create product for testing edit functions
      *
-     * @return void
+     * @return int
      */
-    public function testEditProduct()
+    public function createProductForEditTesting()
     {
         Storage::fake('uploads');
 
-        $file = UploadedFile::fake()->image('product.png');
+        $file = UploadedFile::fake()->image('product.jpg');
 
         $data = $this->readyData;
         $data['picture'] = $file;
 
         $response = $this->json('POST', '/api/add', $data);
-        $response->assertStatus(200);
 
-        $id = $response->json()['id'];
+        
+        return $response->json()['id'];
     }
-    
+
+    /**
+     * Edit product without a name
+     *
+     * @return void
+     */
+    public function testEditProductWithoutName()
+    {
+        $id = $this->createProductForEditTesting();        
+        $file = UploadedFile::fake()->image('product.jpg');
+
+        $data = $this->readyData;
+        $data['name'] = ' ';
+        $data['picture'] = $file;
+
+        $response = $this->json('PUT', "/api/update/{$id}", $data);
+        $response->assertStatus(422);
+        $response->assertJsonStructure(
+            [
+                'message',
+                'errors' => [
+                    'name'
+                ]
+            ]
+        );
+    }
+
+    /**
+     * Edit product without a description
+     *
+     * @return void
+     */
+    public function testEditProductWithoutDescription()
+    {
+        $id = $this->createProductForEditTesting();        
+        $file = UploadedFile::fake()->image('product.jpg');
+
+        $data = $this->readyData;
+        $data['description'] = ' ';
+        $data['picture'] = $file;
+
+        $response = $this->json('PUT', "/api/update/{$id}", $data);
+        $response->assertStatus(422);
+        $response->assertJsonStructure(
+            [
+                'message',
+                'errors' => [
+                    'description'
+                ]
+            ]
+        );
+    }
+
+    /**
+     * Edit product without a price
+     *
+     * @return void
+     */
+    public function testEditProductWithoutPrice()
+    {
+        $id = $this->createProductForEditTesting();        
+        $file = UploadedFile::fake()->image('product.jpg');
+
+        $data = $this->readyData;
+        unset($data['price']);
+        $data['picture'] = $file;
+
+        $response = $this->json('PUT', "/api/update/{$id}", $data);
+        $response->assertStatus(422);
+        $response->assertJsonStructure(
+            [
+                'message',
+                'errors' => [
+                    'price'
+                ]
+            ]
+        );
+    }
+
+    /**
+     * Edit product with an invalid image (bmp)
+     *
+     * @return void
+     */
+    public function testEditProductWithBMPImage()
+    {
+        $id = $this->createProductForEditTesting();        
+        $file = UploadedFile::fake()->image('product.bmp');
+
+        $data = $this->readyData;
+        $data['picture'] = $file;
+
+        $response = $this->json('PUT', "/api/update/{$id}", $data);
+        $response->assertStatus(422);
+        $response->assertJsonStructure(
+            [
+                'message',
+                'errors' => [
+                    'picture'
+                ]
+            ]
+        );
+    }
+  
 }
