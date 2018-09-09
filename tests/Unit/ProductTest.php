@@ -36,17 +36,57 @@ class ProductTest extends TestCase
     }
 
     /**
-     * Create new product with complete fields
+     * Create new product with a string as an image
      *
      * @return void
      */
-    public function testCreateNewProduct()
+    public function testCreateNewProductInvalidPicture()
     {
         $data = [
             'name' => 'test name',
             'price' => 100,
             'description' => 'test description',
             'picture' => 'test'
+        ];
+
+        $response = $this->json('POST', '/api/add', $data);
+        $response->assertStatus(422);
+    }
+
+    /**
+     * Create new product with an empty description
+     *
+     * @return void
+     */
+    public function testCreateNewProductEmptyDescription()
+    {
+        $file = UploadedFile::fake()->image('product.jpg');
+
+        $data = [
+            'name' => 'test name',
+            'price' => 100,
+            'description' => ' ',
+            'picture' => $file
+        ];
+
+        $response = $this->json('POST', '/api/add', $data);
+        $response->assertStatus(422);
+    }
+
+    /**
+     * Create new product with an empty name
+     *
+     * @return void
+     */
+    public function testCreateNewProductEmptyName()
+    {
+        $file = UploadedFile::fake()->image('product.jpg');
+
+        $data = [
+            'name' => ' ',
+            'price' => 100,
+            'description' => 'test description',
+            'picture' => $file
         ];
 
         $response = $this->json('POST', '/api/add', $data);
