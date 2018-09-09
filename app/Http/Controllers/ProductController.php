@@ -15,7 +15,8 @@ class ProductController extends Controller
 
     public function details(int $id)
     {
-        return view('product.details');
+        $product = Product::findOrFail($id);
+        return response()->json($product);
     }
 
     public function create()
@@ -25,7 +26,12 @@ class ProductController extends Controller
     
     public function edit(int $id)
     {
-        return view('product.edit');
+        $product = Product::findOrFail($id);
+        return view(
+            'product.edit', [
+                'product' => $product 
+            ]
+        );
     }
 
     public function save(Request $request, Product $product)
