@@ -28,14 +28,12 @@ class ProductController extends Controller
 
     public function add(Request $request)
     {
-        // $data = $request->json()->all();
-
         $validatedData = $request->validate(
             [
                 'name' => 'required|string|max:255',
                 'description' => 'required|string|max:255',
                 'price' => 'required|integer',
-                'picture' => 'required|file'
+                'picture' => 'required|mimes:jpg,jpeg,gif,png'
             ]
         );
 
