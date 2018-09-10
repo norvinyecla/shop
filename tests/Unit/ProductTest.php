@@ -384,7 +384,7 @@ class ProductTest extends TestCase
     {
         $this->createProductForPaginationTesting();
 
-        $response = $this->get("/");
+        $response = $this->get("/products");
         $response->assertStatus(200);        
         $this->assertTrue(10 <= $response->json()['data']);
         $this->assertEquals(10, $response->json()['per_page']);
@@ -408,7 +408,7 @@ class ProductTest extends TestCase
     {
         $this->createProductForPaginationTesting();
 
-        $response = $this->get("/?sort_by=name&order=asc");
+        $response = $this->get("/products/?sort_by=name&order=asc");
         $response->assertStatus(200);
         
         $this->assertTrue(
@@ -431,7 +431,7 @@ class ProductTest extends TestCase
     {
         $this->createProductForPaginationTesting();
 
-        $response = $this->get("/?sort_by=name&order=desc");
+        $response = $this->get("/products/?sort_by=name&order=desc");
         $response->assertStatus(200);
         
         $this->assertTrue(
@@ -454,7 +454,7 @@ class ProductTest extends TestCase
     {
         $this->createProductForPaginationTesting();
 
-        $response = $this->get("/?sort_by=price&order=asc");
+        $response = $this->get("/products/?sort_by=price&order=asc");
         $response->assertStatus(200);
         
         $this->assertTrue(
@@ -477,7 +477,7 @@ class ProductTest extends TestCase
     {
         $this->createProductForPaginationTesting();
 
-        $response = $this->get("/?sort_by=price&order=desc");
+        $response = $this->get("/products/?sort_by=price&order=desc");
         $response->assertStatus(200);
         
         $this->assertTrue(
