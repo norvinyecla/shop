@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class ProductTest extends TestCase
 {
     use RefreshDatabase;
+    use WithFaker;
 
     public $readyData = [
         'name' => 'test name',
@@ -221,6 +222,27 @@ class ProductTest extends TestCase
     }
 
     /**
+     * Create 25 products for testing pagination
+     *
+     * @return int
+     */
+    public function createProductForPaginationTesting()
+    {
+        Storage::fake('uploads');
+        $file = UploadedFile::fake()->image('product.jpg');
+        
+        for ($i = 0; $i < 25; $i++) {        
+            $data = $this->readyData;
+            $data['name'] = $this->faker->name;
+            $data['price'] = $this->faker->randomNumber(3);
+            $data['picture'] = $file;
+            $response = $this->json('POST', '/api/add', $data);
+        }        
+
+        return $response->json()['id'];
+    }
+
+    /**
      * Edit product without a name
      *
      * @return void
@@ -350,6 +372,113 @@ class ProductTest extends TestCase
             [
                 "message" => "Product {$id} has been deleted."
             ]
+        );
+    }
+
+    /**
+     * Test pagination with no sorting
+     *
+     * @return void
+     */
+    public function testPagination()
+    {
+        $this->createProductForPaginationTesting();
+
+        $response = $this->get("/");
+        $response->assertStatus(200);        
+        $this->assertTrue(10 <= $response->json()['data']);
+        $this->assertEquals(10, $response->json()['per_page']);
+    }
+
+    /**
+     * Test pagination with sorting (product name ascending)
+     *
+     * @return void
+     */
+    public function testPaginationAscendingProductName()
+    {
+        $this->createProductForPaginationTesting();
+
+        $response = $this->get("/?sort_by=name&order=asc");
+        $response->assertStatus(200);
+        
+        $this->assertTrue(
+            $response->json()['data'][0]['name'] <= 
+            $response->json()['data'][1]['name']
+        );
+
+        $this->assertTrue(
+            $response->json()['data'][1]['name'] <= 
+            $response->json()['data'][2]['name']
+        );
+    }
+
+    /**
+     * Test pagination with sorting (product name descending)
+     *
+     * @return void
+     */
+    public function testPaginationDescendingProductName()
+    {
+        $this->createProductForPaginationTesting();
+
+        $response = $this->get("/?sort_by=name&order=desc");
+        $response->assertStatus(200);
+        
+        $this->assertTrue(
+            $response->json()['data'][0]['name'] >= 
+            $response->json()['data'][1]['name']
+        );
+
+        $this->assertTrue(
+            $response->json()['data'][1]['name'] >= 
+            $response->json()['data'][2]['name']
+        );
+    }
+
+    /**
+     * Test pagination with sorting (product price ascending)
+     *
+     * @return void
+     */
+    public function testPaginationAscendingProductPrice()
+    {
+        $this->createProductForPaginationTesting();
+
+        $response = $this->get("/?sort_by=price&order=asc");
+        $response->assertStatus(200);
+        
+        $this->assertTrue(
+            $response->json()['data'][0]['price'] <= 
+            $response->json()['data'][1]['price']
+        );
+
+        $this->assertTrue(
+            $response->json()['data'][1]['price'] <= 
+            $response->json()['data'][2]['price']
+        );
+    }
+
+    /**
+     * Test pagination with sorting (product price descending)
+     *
+     * @return void
+     */
+    public function testPaginationDescendingProductPrice()
+    {
+        $this->createProductForPaginationTesting();
+
+        $response = $this->get("/?sort_by=price&order=desc");
+        $response->assertStatus(200);
+        
+        $this->assertTrue(
+            $response->json()['data'][0]['price'] >= 
+            $response->json()['data'][1]['price']
+        );
+
+        $this->assertTrue(
+            $response->json()['data'][1]['price'] >= 
+            $response->json()['data'][2]['price']
         );
     }
 }
