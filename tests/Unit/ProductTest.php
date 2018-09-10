@@ -340,7 +340,7 @@ class ProductTest extends TestCase
      *
      * @return void
      */
-    public function testEditProductWithValidId()
+    public function testDeleteProductWithValidId()
     {
         $id = $this->createProductForEditTesting();
 
