@@ -376,11 +376,11 @@ class ProductTest extends TestCase
     }
 
     /**
-     * Test pagination with no sorting
+     * Test pagination with default sorting (sort by ID ascending)
      *
      * @return void
      */
-    public function testPagination()
+    public function testDefaultPagination()
     {
         $this->createProductForPaginationTesting();
 
@@ -388,6 +388,15 @@ class ProductTest extends TestCase
         $response->assertStatus(200);        
         $this->assertTrue(10 <= $response->json()['data']);
         $this->assertEquals(10, $response->json()['per_page']);
+        $this->assertTrue(
+            $response->json()['data'][0]['id'] < 
+            $response->json()['data'][1]['id']
+        );
+
+        $this->assertTrue(
+            $response->json()['data'][1]['id'] < 
+            $response->json()['data'][2]['id']
+        );
     }
 
     /**
