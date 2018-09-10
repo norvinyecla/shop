@@ -5,12 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Product;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function index() 
+    public function index(Request $request) 
     {
-        return view('product.index');
+        $sortBy = $request->input('sort_by') ?? 'id';
+        $sortDirection = $request->input('order') ?? 'asc';
+        
+        $products = DB::table('products')->orderBy($sortBy, $sortDirection)
+            ->paginate(10);
+        return response()->json($products);
     }
 
     public function details(int $id)
