@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+    public function home() 
+    {
+        return view('product.index');
+    }
+
     public function index(Request $request) 
     {
         $sortBy = $request->input('sort_by') ?? 'id';
