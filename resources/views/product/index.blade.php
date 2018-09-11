@@ -6,10 +6,16 @@
     <title>List Products</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
 </head>
 <body>
-    <p>List of products page.</p>
+    <h3>List of Products</h3>
     <a href="/create">Create a new product</a>
+    
+    <div class='container' id='app'>
+        <product-list></product-list>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
