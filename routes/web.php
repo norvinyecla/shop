@@ -11,6 +11,7 @@
 |
 */
 Route::get('/', 'ProductController@home');
+Route::get('/view/{id}', 'ProductController@view');
 Route::get('/products', 'ProductController@index');
 Route::get('/details/{id}', 'ProductController@details');
 Route::get('/create', 'ProductController@create');

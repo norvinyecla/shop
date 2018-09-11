@@ -30,6 +30,17 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
+    public function view(int $id)
+    {
+        $product = Product::findOrFail($id);
+        return view(
+            'product.details', [
+                'product' => $product 
+            ]
+        );
+    }
+
+
     public function create()
     {
         return view('product.create');

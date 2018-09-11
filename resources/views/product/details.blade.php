@@ -9,6 +9,19 @@
     <script src="main.js"></script>
 </head>
 <body>
-    <p>View product page.</p>
+    <a href='/'>Go Back Home</a>
+    <h1>Viewing {{ $product['name'] }}</h1>
+    <p>
+        Name: {{ $product['name'] }} 
+    </p>
+    <p>
+        Picture: {{ $product['picture'] }} 
+    </p>
+    <p>
+        Price: {{ $product['price'] }} 
+    </p>
+    <p>
+        Description: {{ $product['description'] }} 
+    </p>
 </body>
 </html>
