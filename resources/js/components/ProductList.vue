@@ -35,9 +35,14 @@
                 <td style="border:1px solid black">
                     {{ product.price }}
                 </td>
-                <td style="border:1px solid black">{{ product.description }}</td>
-                <td style="border:1px solid black"><button @click="editProduct(product.id)" class="btn btn-danger btn-xs pull-right">Edit</button></td>
-                <td style="border:1px solid black"><button @click="deleteProduct(product.id)" class="btn btn-danger btn-xs pull-right">Delete</button></td>
+                <td style="border:1px solid black">
+                    {{ product.description }}
+                </td>
+                <td style="border:1px solid black">
+                    <button @click="viewProduct(product.id)" class="btn btn-danger btn-xs pull-right">View</button>
+                    <button @click="editProduct(product.id)" class="btn btn-danger btn-xs pull-right">Edit</button>
+                    <button @click="deleteProduct(product.id)" class="btn btn-danger btn-xs pull-right">Delete</button>
+                </td>
             </tr>
         </table>
     </div>
@@ -64,6 +69,10 @@
 
             editProduct(id) {
                 location.href = 'edit/' + id;
+            },
+
+            viewProduct(id) {
+                location.href = 'view/' + id;
             },
  
             deleteProduct(id) {
