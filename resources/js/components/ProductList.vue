@@ -1,6 +1,6 @@
 <template>
     <div class='row'>
-        <span v-if='list.length === 0'>There are no products yet!</span>
+        <span v-if='list.length === 0'>There are no products yet.</span> 
         <table v-else class="list-group" >
             <tr>
                 <th>
