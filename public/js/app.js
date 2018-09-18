@@ -47560,110 +47560,121 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _c(
-      "table",
-      { staticClass: "list-group" },
-      [
-        _vm.list.length === 0
-          ? _c("tr", [_vm._v("There are no products yet!")])
-          : _c("tr", [
-              _c("th", [_vm._v("\n                ID\n            ")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("\n                Name\n            ")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("\n                Picture\n            ")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("\n                Price\n            ")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("\n                Description\n            ")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("\n                Action\n            ")])
-            ]),
-        _vm._v(" "),
-        _vm._l(_vm.list, function(product, index) {
-          return _c("tr", { key: index, staticClass: "list-group-item" }, [
-            _c("td", { staticStyle: { border: "1px solid black" } }, [
-              _vm._v(
-                "\n                " + _vm._s(product.id) + "\n            "
-              )
-            ]),
+    _vm.list.length === 0
+      ? _c("span", [_vm._v("There are no products yet.")])
+      : _c(
+          "table",
+          { staticClass: "list-group" },
+          [
+            _vm._m(0),
             _vm._v(" "),
-            _c("td", { staticStyle: { border: "1px solid black" } }, [
-              _vm._v(
-                "\n                " + _vm._s(product.name) + "\n            "
-              )
-            ]),
-            _vm._v(" "),
-            _c("td", { staticStyle: { border: "1px solid black" } }, [
-              _vm._v(
-                "\n                " +
-                  _vm._s(product.picture) +
-                  "\n            "
-              )
-            ]),
-            _vm._v(" "),
-            _c("td", { staticStyle: { border: "1px solid black" } }, [
-              _vm._v(
-                "\n                " + _vm._s(product.price) + "\n            "
-              )
-            ]),
-            _vm._v(" "),
-            _c("td", { staticStyle: { border: "1px solid black" } }, [
-              _vm._v(
-                "\n                " +
-                  _vm._s(product.description) +
-                  "\n            "
-              )
-            ]),
-            _vm._v(" "),
-            _c("td", { staticStyle: { border: "1px solid black" } }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-danger btn-xs pull-right",
-                  on: {
-                    click: function($event) {
-                      _vm.viewProduct(product.id)
-                    }
-                  }
-                },
-                [_vm._v("View")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-danger btn-xs pull-right",
-                  on: {
-                    click: function($event) {
-                      _vm.editProduct(product.id)
-                    }
-                  }
-                },
-                [_vm._v("Edit")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-danger btn-xs pull-right",
-                  on: {
-                    click: function($event) {
-                      _vm.deleteProduct(product.id)
-                    }
-                  }
-                },
-                [_vm._v("Delete")]
-              )
-            ])
-          ])
-        })
-      ],
-      2
-    )
+            _vm._l(_vm.list, function(product, index) {
+              return _c("tr", { key: index, staticClass: "list-group-item" }, [
+                _c("td", { staticStyle: { border: "1px solid black" } }, [
+                  _vm._v(
+                    "\n                " + _vm._s(product.id) + "\n            "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticStyle: { border: "1px solid black" } }, [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(product.name) +
+                      "\n            "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticStyle: { border: "1px solid black" } }, [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(product.picture) +
+                      "\n            "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticStyle: { border: "1px solid black" } }, [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(product.price) +
+                      "\n            "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticStyle: { border: "1px solid black" } }, [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(product.description) +
+                      "\n            "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticStyle: { border: "1px solid black" } }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger btn-xs pull-right",
+                      on: {
+                        click: function($event) {
+                          _vm.viewProduct(product.id)
+                        }
+                      }
+                    },
+                    [_vm._v("View")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger btn-xs pull-right",
+                      on: {
+                        click: function($event) {
+                          _vm.editProduct(product.id)
+                        }
+                      }
+                    },
+                    [_vm._v("Edit")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger btn-xs pull-right",
+                      on: {
+                        click: function($event) {
+                          _vm.deleteProduct(product.id)
+                        }
+                      }
+                    },
+                    [_vm._v("Delete")]
+                  )
+                ])
+              ])
+            })
+          ],
+          2
+        )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("\n                ID\n            ")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("\n                Name\n            ")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("\n                Picture\n            ")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("\n                Price\n            ")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("\n                Description\n            ")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("\n                Action\n            ")])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
