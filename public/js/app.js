@@ -47566,9 +47566,19 @@ var render = function() {
       [
         _vm.list.length === 0
           ? _c("tr", [_vm._v("There are no products yet!")])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm._m(0),
+          : _c("tr", [
+              _c("th", [_vm._v("\n                ID\n            ")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("\n                Name\n            ")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("\n                Picture\n            ")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("\n                Price\n            ")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("\n                Description\n            ")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("\n                Action\n            ")])
+            ]),
         _vm._v(" "),
         _vm._l(_vm.list, function(product, index) {
           return _c("tr", { key: index, staticClass: "list-group-item" }, [
@@ -47653,26 +47663,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", [_vm._v("\n                ID\n            ")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("\n                Name\n            ")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("\n                Picture\n            ")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("\n                Price\n            ")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("\n                Description\n            ")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("\n                Action\n            ")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
