@@ -1,7 +1,7 @@
 <template>
     <div class='row'>
-        <table class="list-group" >
-            <tr v-if='list.length === 0'>There are no products yet!</tr>
+        <span v-if='list.length === 0'>There are no products yet!</span> 
+        <table v-else class="list-group" >    
             <tr>
                 <th>
                     ID
