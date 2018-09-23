@@ -15,7 +15,7 @@
         <a href='/'>Go Back Home</a>
         <h2>Editing {{ $product['name'] }} </h2>
         <div class="container" id='app'>
-            <product-edit-form :product=product></product-edit-form>
+            <product-edit-form v-bind:product=product></product-edit-form>
         </div>
         
         <!-- Scripts -->

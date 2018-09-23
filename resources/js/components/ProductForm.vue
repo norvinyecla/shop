@@ -1,5 +1,7 @@
 <template>
     <div class='row'>
+        <h3>{{ title }}</h3>
+        <p>{{ mode }}</p>
         <form action="#" enctype="multipart/form-data" @submit.prevent="createProduct()">
             <div class="input-group">
                 <fieldset>
@@ -28,9 +30,11 @@
 
 <script>
     export default {
+        props: [ 'mode '],
         data() {
             return {
-                message: 'Create new product',
+                title: '',
+                message: '',
                 product: {
                     name: '',
                     description: '',
@@ -41,6 +45,13 @@
         },
         
         created() {
+            if (this.editMode == 'edit') {
+                this.title = "Edit product" 
+                this.message = "Edit product"
+            } else {
+                this.title = "Create a new product"
+                this.message = "Create product"
+            }
             
         },
         
