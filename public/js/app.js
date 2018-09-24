@@ -48109,38 +48109,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         onFileChange: function onFileChange(e) {
             this.product.picture = this.$refs.picture.files[0];
         },
-        createProduct: function createProduct() {
-            alert(this.id + ' ' + this.mode);
+        editProduct: function editProduct() {
+            var _this = this;
+
             var formData = new FormData();
             formData.append("name", this.product.name);
             formData.append("price", this.product.price);
             formData.append("description", this.product.description);
             formData.append("picture", this.product.picture);
-            // axios(
-            //     {
-            //         method: 'POST',
-            //         url: 'api/add', 
-            //         data: formData,
-            //         headers: {
-            //             'Content-Type': 'multipart/form-data'
-            //         }
-            //     }
-            // ).then((res) => {
-            //         this.product.name = '';
-            //         this.product.description = '';
-            //         this.product.price = 0;
-            //         this.product.picture = null;
-            //         this.edit = false;
-            //         location.href = "/";
-
-            //     })
-            //     .catch((err) => {
-            //         err.response.data.errors.forEach(function (item, index) {
-            //             console.log(item)
-            //         })
-            //         console.log(warning)
-
-            //     });
+            axios({
+                method: 'PUT',
+                url: 'api/update/'.this.id,
+                data: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(function (res) {
+                _this.product.name = '';
+                _this.product.description = '';
+                _this.product.price = 0;
+                _this.product.picture = null;
+                _this.edit = false;
+                location.href = "/";
+            }).catch(function (err) {
+                err.response.data.errors.forEach(function (item, index) {
+                    console.log(item);
+                });
+                console.log(warning);
+            });
         }
     }
 });
@@ -48163,7 +48159,7 @@ var render = function() {
         on: {
           submit: function($event) {
             $event.preventDefault()
-            _vm.createProduct()
+            _vm.editProduct()
           }
         }
       },

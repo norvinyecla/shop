@@ -1,7 +1,7 @@
 <template>
     <div class='row'>
         <h3>Edit Product</h3>
-        <form action="#" enctype="multipart/form-data" @submit.prevent="createProduct()">
+        <form action="#" enctype="multipart/form-data" @submit.prevent="editProduct()">
             <div class="input-group">
                 <fieldset>
                     <label>Name</label>
@@ -49,41 +49,40 @@
         
         methods: {
             onFileChange(e) {
-                this.product.picture = this.$refs.picture.files[0];
+                this.product.picture = this.$refs.picture.files[0]
             },
  
-            createProduct() {
-                alert(this.id + ' ' + this.mode)
+            editProduct() {
                 var formData = new FormData()
-                formData.append("name", this.product.name); 
-                formData.append("price", this.product.price);
-                formData.append("description", this.product.description);
-                formData.append("picture", this.product.picture);
-                // axios(
-                //     {
-                //         method: 'POST',
-                //         url: 'api/add', 
-                //         data: formData,
-                //         headers: {
-                //             'Content-Type': 'multipart/form-data'
-                //         }
-                //     }
-                // ).then((res) => {
-                //         this.product.name = '';
-                //         this.product.description = '';
-                //         this.product.price = 0;
-                //         this.product.picture = null;
-                //         this.edit = false;
-                //         location.href = "/";
+                formData.append("name", this.product.name)
+                formData.append("price", this.product.price)
+                formData.append("description", this.product.description)
+                formData.append("picture", this.product.picture)
+                axios(
+                    {
+                        method: 'PUT',
+                        url: 'api/update/' . this.id, 
+                        data: formData,
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }
+                ).then((res) => {
+                        this.product.name = ''
+                        this.product.description = ''
+                        this.product.price = 0
+                        this.product.picture = null
+                        this.edit = false
+                        location.href = "/"
 
-                //     })
-                //     .catch((err) => {
-                //         err.response.data.errors.forEach(function (item, index) {
-                //             console.log(item)
-                //         })
-                //         console.log(warning)
+                    })
+                    .catch((err) => {
+                        err.response.data.errors.forEach(function (item, index) {
+                            console.log(item)
+                        })
+                        console.log(warning)
                         
-                //     });
+                    });
             }
         }
     }
