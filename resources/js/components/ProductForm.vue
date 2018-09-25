@@ -29,6 +29,7 @@
 </template>
 
 <script>
+    import { EventBus } from '../event-bus.js'
     export default {
         props: [ 'mode '],
         data() {
@@ -76,17 +77,16 @@
                         }
                     }
                 ).then((res) => {
-                        this.product.name = '';
-                        this.product.description = '';
-                        this.product.price = 0;
-                        this.product.picture = null;
-                        this.edit = false;
-                        location.href = "/";
-
+                        this.product.name = ''
+                        this.product.description = ''
+                        this.product.price = 0
+                        this.product.picture = null
+                        this.edit = false
+                        alert('Successfully added a product!')
+                        EventBus.$emit('refresh')
                     })
                     .catch((err) => {
-                        alert(err)
-                        var warning = 'asd'
+                        alert('Cannot add this product.')
                         err.response.data.errors.forEach(function (item, index) {
                             console.log(item)
                         })

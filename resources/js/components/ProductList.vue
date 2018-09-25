@@ -1,5 +1,6 @@
 <template>
     <div>
+        <button @click="toggleCreateForm()">Create</button>
         <div class='row'>
             <span v-if='list.length === 0'>There are no products yet.</span> 
             <table v-else class="list-group">
@@ -47,46 +48,53 @@
                 </tr>
             </table>
         </div>
-        <div v-show="showEditForm">
-            <product-edit-form v-bind:id="id" v-bind:mode="mode"></product-edit-form>
+        <div v-show="showForm">
+            <product-form v-bind:id="id" v-bind:mode="mode"></product-form>
         </div>
     </div>
 </template>
 
 <script>
+    import { EventBus } from '../event-bus.js'
     export default {
         data() {
             return {
-                mode: "",
+                mode: 'add',
                 list: [],
-                showEditForm: false,
+                showForm: false,
                 id: 0,
-            };
+            }
         },
         
         created() {
-            this.fetchProductList();
+            this.fetchProductList()
+
+            EventBus.$on('refresh', () => {
+                this.fetchProductList()
+                this.showForm = false
+            })
         },
         
         methods: {
             fetchProductList() {
                 axios.get('products').then((res) => {
-                    this.list = res.data.data;
+                    this.list = res.data.data
                 });
             },
 
-            createProduct() {
+            toggleCreateForm() {
+                this.showForm = !this.showForm
                 this.mode = "add"
             },
 
             editProduct(id) {
-                this.showEditForm = !this.showEditForm;
-                this.id = id
                 this.mode = "edit"
+                this.showForm = !this.showForm
+                this.id = id
             },
 
             viewProduct(id) {
-                location.href = 'view/' + id;
+                location.href = 'view/' + id
             },
  
             deleteProduct(id) {
@@ -94,7 +102,7 @@
                 {
                     axios.delete('api/delete/' + id)
                         .then((res) => {
-                            this.fetchProductList();
+                            this.fetchProductList()
                         })
                         .catch((err) => console.error(err));
                 }

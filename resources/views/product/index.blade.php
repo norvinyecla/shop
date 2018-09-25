@@ -8,9 +8,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
 </head>
 <body>
-    <h3>List of Products</h3>
-    <a href="/create">Create a new product</a>
-    
+    <h3>List of Products</h3>    
     <div class='container' id='app'>
         <product-list></product-list>
     </div>
