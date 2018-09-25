@@ -402,13 +402,129 @@ module.exports = g;
 
 /***/ }),
 /* 2 */
+<<<<<<< HEAD
+=======
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 3 */
+>>>>>>> master
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(0);
+<<<<<<< HEAD
 var normalizeHeaderName = __webpack_require__(23);
+=======
+var normalizeHeaderName = __webpack_require__(22);
+>>>>>>> master
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -424,10 +540,17 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
+<<<<<<< HEAD
     adapter = __webpack_require__(7);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
     adapter = __webpack_require__(7);
+=======
+    adapter = __webpack_require__(8);
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(8);
+>>>>>>> master
   }
   return adapter;
 }
@@ -502,10 +625,17 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
+<<<<<<< HEAD
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 /* 3 */
+=======
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+
+/***/ }),
+/* 4 */
+>>>>>>> master
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13878,6 +14008,7 @@ module.exports = Cancel;
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global, setImmediate) {/*!
  * Vue.js v2.5.17
@@ -13885,6 +14016,10 @@ module.exports = Cancel;
  * Released under the MIT License.
  */
 
+=======
+__webpack_require__(13);
+module.exports = __webpack_require__(52);
+>>>>>>> master
 
 /*  */
 
@@ -13921,6 +14056,7 @@ function isPrimitive (value) {
   )
 }
 
+<<<<<<< HEAD
 /**
  * Quick object check - this is primarily used to tell
  * Objects from primitive values when we know the value
@@ -13929,6 +14065,12 @@ function isPrimitive (value) {
 function isObject (obj) {
   return obj !== null && typeof obj === 'object'
 }
+=======
+Vue.component('example-component', __webpack_require__(40));
+Vue.component('product-list', __webpack_require__(43));
+Vue.component('product-form', __webpack_require__(46));
+Vue.component('product-edit-form', __webpack_require__(49));
+>>>>>>> master
 
 /**
  * Get the raw type string of a value e.g. [object Object]
@@ -31777,6 +31919,7 @@ if (token) {
       return array;
     }
 
+<<<<<<< HEAD
     /**
      * Converts `string` to a property path array.
      *
@@ -31794,6 +31937,12 @@ if (token) {
       });
       return result;
     });
+=======
+var utils = __webpack_require__(0);
+var bind = __webpack_require__(6);
+var Axios = __webpack_require__(21);
+var defaults = __webpack_require__(3);
+>>>>>>> master
 
     /**
      * Converts `value` to a string key if it's not a string or symbol.
@@ -34359,6 +34508,7 @@ if (token) {
       return baseFlatten(map(collection, iteratee), depth);
     }
 
+<<<<<<< HEAD
     /**
      * Iterates over elements of `collection` and invokes `iteratee` for each element.
      * The iteratee is invoked with three arguments: (value, index|key, collection).
@@ -34393,6 +34543,12 @@ if (token) {
       var func = isArray(collection) ? arrayEach : baseEach;
       return func(collection, getIteratee(iteratee, 3));
     }
+=======
+var defaults = __webpack_require__(3);
+var utils = __webpack_require__(0);
+var InterceptorManager = __webpack_require__(30);
+var dispatchRequest = __webpack_require__(31);
+>>>>>>> master
 
     /**
      * This method is like `_.forEach` except that it iterates over elements of
@@ -36200,6 +36356,7 @@ if (token) {
       return source == null || baseConformsTo(object, source, keys(source));
     }
 
+<<<<<<< HEAD
     /**
      * Performs a
      * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
@@ -36235,6 +36392,14 @@ if (token) {
     function eq(value, other) {
       return value === other || (value !== value && other !== other);
     }
+=======
+var utils = __webpack_require__(0);
+var transformData = __webpack_require__(32);
+var isCancel = __webpack_require__(10);
+var defaults = __webpack_require__(3);
+var isAbsoluteURL = __webpack_require__(33);
+var combineURLs = __webpack_require__(34);
+>>>>>>> master
 
     /**
      * Checks if `value` is greater than `other`.
@@ -47293,7 +47458,11 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+<<<<<<< HEAD
 var normalizeComponent = __webpack_require__(12)
+=======
+var normalizeComponent = __webpack_require__(2)
+>>>>>>> master
 /* script */
 var __vue_script__ = __webpack_require__(41)
 /* template */
@@ -47358,6 +47527,127 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+<<<<<<< HEAD
+=======
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {
+        console.log('Component mounted.');
+    }
+});
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row justify-content-center" }, [
+        _c("div", { staticClass: "col-md-8" }, [
+          _c("div", { staticClass: "card card-default" }, [
+            _c("div", { staticClass: "card-header" }, [
+              _vm._v("Example Component")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _vm._v(
+                "\n                    I'm an example component.\n                "
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-299e239e", module.exports)
+  }
+}
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(44)
+/* template */
+var __vue_template__ = __webpack_require__(45)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/ProductList.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-438ffe92", Component.options)
+  } else {
+    hotAPI.reload("data-v-438ffe92", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+>>>>>>> master
+//
+//
+//
+//
+//
 //
 //
 //
@@ -47403,9 +47693,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+<<<<<<< HEAD
             mode: 'add',
             list: [],
             showForm: false,
+=======
+            mode: "",
+            list: [],
+            showEditForm: false,
+>>>>>>> master
             id: 0
         };
     },
@@ -47429,6 +47725,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.list = res.data.data;
             });
         },
+<<<<<<< HEAD
         toggleCreateForm: function toggleCreateForm() {
             this.showForm = !this.showForm;
             this.mode = "add";
@@ -47437,6 +47734,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.mode = "edit";
             this.showForm = !this.showForm;
             this.id = id;
+=======
+        createProduct: function createProduct() {
+            this.mode = "add";
+        },
+        editProduct: function editProduct(id) {
+            this.showEditForm = !this.showEditForm;
+            this.id = id;
+            this.mode = "edit";
+>>>>>>> master
         },
         viewProduct: function viewProduct(id) {
             location.href = 'view/' + id;
@@ -47464,6 +47770,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+<<<<<<< HEAD
     _c(
       "button",
       {
@@ -47476,6 +47783,8 @@ var render = function() {
       [_vm._v("Create")]
     ),
     _vm._v(" "),
+=======
+>>>>>>> master
     _c("div", { staticClass: "row" }, [
       _vm.list.length === 0
         ? _c("span", [_vm._v("There are no products yet.")])
@@ -47585,12 +47894,21 @@ var render = function() {
           {
             name: "show",
             rawName: "v-show",
+<<<<<<< HEAD
             value: _vm.showForm,
             expression: "showForm"
           }
         ]
       },
       [_c("product-form", { attrs: { id: _vm.id, mode: _vm.mode } })],
+=======
+            value: _vm.showEditForm,
+            expression: "showEditForm"
+          }
+        ]
+      },
+      [_c("product-edit-form", { attrs: { id: _vm.id, mode: _vm.mode } })],
+>>>>>>> master
       1
     )
   ])
@@ -47629,7 +47947,11 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+<<<<<<< HEAD
 var normalizeComponent = __webpack_require__(12)
+=======
+var normalizeComponent = __webpack_require__(2)
+>>>>>>> master
 /* script */
 var __vue_script__ = __webpack_require__(44)
 /* template */
@@ -47706,12 +48028,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['mode '],
     data: function data() {
         return {
-            message: 'Create new product',
+            title: '',
+            message: '',
             product: {
                 name: '',
                 description: '',
@@ -47720,7 +48046,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         };
     },
-    created: function created() {},
+    created: function created() {
+        if (this.editMode == 'edit') {
+            this.title = "Edit product";
+            this.message = "Edit product";
+        } else {
+            this.title = "Create a new product";
+            this.message = "Create product";
+        }
+    },
 
 
     methods: {
@@ -47781,6 +48115,10 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
+    _c("h3", [_vm._v(_vm._s(_vm.title))]),
+    _vm._v(" "),
+    _c("p", [_vm._v(_vm._s(_vm.mode))]),
+    _vm._v(" "),
     _c(
       "form",
       {
@@ -47906,7 +48244,281 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 47 */
+=======
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(50)
+/* template */
+var __vue_template__ = __webpack_require__(51)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/ProductEditForm.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-f71b1c3c", Component.options)
+  } else {
+    hotAPI.reload("data-v-f71b1c3c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 50 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['id', 'mode'],
+    data: function data() {
+        return {
+            message: 'Edit product',
+            product: {
+                name: '',
+                description: '',
+                price: 0,
+                picture: ''
+            }
+        };
+    },
+    created: function created() {},
+
+
+    methods: {
+        onFileChange: function onFileChange(e) {
+            this.product.picture = this.$refs.picture.files[0];
+        },
+        editProduct: function editProduct() {
+            var _this = this;
+
+            var formData = new FormData();
+            formData.append("name", this.product.name);
+            formData.append("price", this.product.price);
+            formData.append("description", this.product.description);
+            formData.append("picture", this.product.picture);
+            axios({
+                method: 'PUT',
+                url: 'api/update/'.this.id,
+                data: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(function (res) {
+                _this.product.name = '';
+                _this.product.description = '';
+                _this.product.price = 0;
+                _this.product.picture = null;
+                _this.edit = false;
+                location.href = "/";
+            }).catch(function (err) {
+                err.response.data.errors.forEach(function (item, index) {
+                    console.log(item);
+                });
+                console.log(warning);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c("h3", [_vm._v("Edit Product")]),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        attrs: { action: "#", enctype: "multipart/form-data" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            _vm.editProduct()
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "input-group" }, [
+          _c("fieldset", [
+            _c("label", [_vm._v("Name")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.product.name,
+                  expression: "product.name"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", name: "name", autofocus: "" },
+              domProps: { value: _vm.product.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.product, "name", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("fieldset", [
+            _c("label", [_vm._v("Description")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.product.description,
+                  expression: "product.description"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", name: "description" },
+              domProps: { value: _vm.product.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.product, "description", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("fieldset", [
+            _c("label", [_vm._v("Price")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.product.price,
+                  expression: "product.price"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", name: "price" },
+              domProps: { value: _vm.product.price },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.product, "price", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("fieldset", [
+            _c("label", [_vm._v("Picture")]),
+            _vm._v(" "),
+            _c("input", {
+              ref: "picture",
+              staticClass: "form-control",
+              attrs: { type: "file", name: "picture", autofocus: "" },
+              on: { change: _vm.onFileChange }
+            })
+          ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "input-group-btn" }, [
+            _c(
+              "button",
+              { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+              [_vm._v(_vm._s(_vm.message))]
+            )
+          ])
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-f71b1c3c", module.exports)
+  }
+}
+
+/***/ }),
+/* 52 */
+>>>>>>> master
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
