@@ -1,8 +1,8 @@
 <template>
     <div class='row'>
-        <h3>{{ title }}</h3>
-        <p>{{ mode }}</p>
-        <form action="#" enctype="multipart/form-data" @submit.prevent="createProduct()">
+        <h3 v-if="mode === 'edit'">Editing product</h3>
+        <h3 v-else>Creating product</h3>
+        <form action="#" enctype="multipart/form-data" @submit.prevent="saveProduct()">
             <div class="input-group">
                 <fieldset>
                     <label>Name</label>
@@ -21,7 +21,10 @@
                     <input v-on:change=onFileChange type="file" ref="picture" name="picture" class="form-control" autofocus>
                 </fieldset>
                 <span class="input-group-btn">
-                    <button type="submit" class="btn btn-primary">{{ message }}</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span v-if="mode === 'edit'">Edit product</span>
+                        <span v-else>Create product</span>
+                    </button>
                 </span>
             </div>
         </form>
@@ -31,7 +34,7 @@
 <script>
     import { EventBus } from '../event-bus.js'
     export default {
-        props: [ 'mode '],
+        props: [ 'id', 'mode' ],
         data() {
             return {
                 title: '',
@@ -46,27 +49,15 @@
         },
         
         created() {
-            if (this.editMode == 'edit') {
-                this.title = "Edit product" 
-                this.message = "Edit product"
-            } else {
-                this.title = "Create a new product"
-                this.message = "Create product"
-            }
-            
+
         },
         
         methods: {
             onFileChange(e) {
                 this.product.picture = this.$refs.picture.files[0];
             },
- 
-            createProduct() {
-                var formData = new FormData()
-                formData.append("name", this.product.name); 
-                formData.append("price", this.product.price);
-                formData.append("description", this.product.description);
-                formData.append("picture", this.product.picture);
+
+            createProduct(formData) {
                 axios(
                     {
                         method: 'POST',
@@ -82,17 +73,32 @@
                         this.product.price = 0
                         this.product.picture = null
                         this.edit = false
-                        alert('Successfully added a product!')
+                        alert('Successfully added a product!')  
                         EventBus.$emit('refresh')
                     })
                     .catch((err) => {
                         alert('Cannot add this product.')
-                        err.response.data.errors.forEach(function (item, index) {
-                            console.log(item)
-                        })
-                        console.log(warning)
+                        console.log(err)
+                        // err.response.errors.forEach(function (item, index) {
+                        //     console.log(item)
+                        // })
+                        // console.log(warning)
                         
-                    });
+                    })
+            },
+ 
+            saveProduct(formData) {
+                var formData = new FormData()
+                formData.append("name", this.product.name); 
+                formData.append("price", this.product.price);
+                formData.append("description", this.product.description);
+                formData.append("picture", this.product.picture);
+                
+                if (this.mode == 'add') {
+                    this.createProduct(formData)
+                } else {
+                    this.editProduct(formData)
+                }
             }
         }
     }

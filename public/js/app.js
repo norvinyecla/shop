@@ -47719,10 +47719,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['mode '],
+    props: ['id', 'mode'],
     data: function data() {
         return {
             title: '',
@@ -47735,29 +47738,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         };
     },
-    created: function created() {
-        if (this.editMode == 'edit') {
-            this.title = "Edit product";
-            this.message = "Edit product";
-        } else {
-            this.title = "Create a new product";
-            this.message = "Create product";
-        }
-    },
+    created: function created() {},
 
 
     methods: {
         onFileChange: function onFileChange(e) {
             this.product.picture = this.$refs.picture.files[0];
         },
-        createProduct: function createProduct() {
+        createProduct: function createProduct(formData) {
             var _this = this;
 
-            var formData = new FormData();
-            formData.append("name", this.product.name);
-            formData.append("price", this.product.price);
-            formData.append("description", this.product.description);
-            formData.append("picture", this.product.picture);
             axios({
                 method: 'POST',
                 url: 'api/add',
@@ -47775,11 +47765,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$emit('refresh');
             }).catch(function (err) {
                 alert('Cannot add this product.');
-                err.response.data.errors.forEach(function (item, index) {
-                    console.log(item);
-                });
-                console.log(warning);
+                console.log(err);
+                // err.response.errors.forEach(function (item, index) {
+                //     console.log(item)
+                // })
+                // console.log(warning)
             });
+        },
+        saveProduct: function saveProduct(formData) {
+            var formData = new FormData();
+            formData.append("name", this.product.name);
+            formData.append("price", this.product.price);
+            formData.append("description", this.product.description);
+            formData.append("picture", this.product.picture);
+
+            if (this.mode == 'add') {
+                this.createProduct(formData);
+            } else {
+                this.editProduct(formData);
+            }
         }
     }
 });
@@ -47793,9 +47797,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _c("h3", [_vm._v(_vm._s(_vm.title))]),
-    _vm._v(" "),
-    _c("p", [_vm._v(_vm._s(_vm.mode))]),
+    _vm.mode === "edit"
+      ? _c("h3", [_vm._v("Editing product")])
+      : _c("h3", [_vm._v("Creating product")]),
     _vm._v(" "),
     _c(
       "form",
@@ -47804,7 +47808,7 @@ var render = function() {
         on: {
           submit: function($event) {
             $event.preventDefault()
-            _vm.createProduct()
+            _vm.saveProduct()
           }
         }
       },
@@ -47903,7 +47907,11 @@ var render = function() {
             _c(
               "button",
               { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-              [_vm._v(_vm._s(_vm.message))]
+              [
+                _vm.mode === "edit"
+                  ? _c("span", [_vm._v("Edit product")])
+                  : _c("span", [_vm._v("Create product")])
+              ]
             )
           ])
         ])
