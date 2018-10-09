@@ -1,4 +1,4 @@
-<template>
+    <template>
     <div>
         <button @click="toggleCreateForm()">Create</button>
         <div class='row'>
@@ -73,6 +73,10 @@
                 this.fetchProductList()
                 this.showForm = false
             })
+
+            EventBus.$on('hide_form', () => {
+                this.showForm = false
+            })
         },
         
         methods: {
@@ -91,6 +95,14 @@
                 this.mode = "edit"
                 this.showForm = !this.showForm
                 this.id = id
+                axios.get('api/' + id).then((res) => {
+                    console.log(res.data.id)
+                    console.log(res.data.name)
+                    console.log(res.data.price)
+                    console.log(res.data.description)
+                    console.log(res.data.picture)
+
+                });
             },
 
             viewProduct(id) {

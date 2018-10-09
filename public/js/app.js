@@ -47429,6 +47429,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.fetchProductList();
             _this.showForm = false;
         });
+
+        __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$on('hide_form', function () {
+            _this.showForm = false;
+        });
     },
 
 
@@ -47448,6 +47452,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.mode = "edit";
             this.showForm = !this.showForm;
             this.id = id;
+            axios.get('api/' + id).then(function (res) {
+                console.log(res.data.id);
+                console.log(res.data.name);
+                console.log(res.data.price);
+                console.log(res.data.description);
+                console.log(res.data.picture);
+            });
         },
         viewProduct: function viewProduct(id) {
             location.href = 'view/' + id;
@@ -47722,6 +47733,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -47729,13 +47744,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             title: '',
-            message: '',
-            product: {
-                name: '',
-                description: '',
-                price: 0,
-                picture: ''
-            }
+            message: ''
+            // product: {
+            //     name: '',
+            //     description: '',
+            //     price: 0,
+            //     picture: ''
+            // }
         };
     },
     created: function created() {},
@@ -47744,6 +47759,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         onFileChange: function onFileChange(e) {
             this.product.picture = this.$refs.picture.files[0];
+        },
+        hideForm: function hideForm() {
+            __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$emit('hide_form');
         },
         createProduct: function createProduct(formData) {
             var _this = this;
@@ -47912,6 +47930,16 @@ var render = function() {
                   ? _c("span", [_vm._v("Edit product")])
                   : _c("span", [_vm._v("Create product")])
               ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "reset" },
+                on: { click: _vm.hideForm }
+              },
+              [_c("span", [_vm._v("Cancel")])]
             )
           ])
         ])
