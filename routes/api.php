@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('/{id}', 'ProductController@details');
 Route::post('/add', 'ProductController@add');
 Route::put('/update/{id}', 'ProductController@update');
 Route::delete('/delete/{id}', 'ProductController@delete');

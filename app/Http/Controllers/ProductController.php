@@ -20,7 +20,7 @@ class ProductController extends Controller
         $sortDirection = $request->input('order') ?? 'asc';
         
         $products = DB::table('products')->orderBy($sortBy, $sortDirection)
-            ->paginate(25);
+            ->paginate(10);
         return response()->json($products);
     }
 

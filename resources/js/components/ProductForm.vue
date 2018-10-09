@@ -25,6 +25,10 @@
                         <span v-if="mode === 'edit'">Edit product</span>
                         <span v-else>Create product</span>
                     </button>
+
+                    <button type="reset" class="btn btn-secondary" @click="hideForm">
+                        <span>Cancel</span>
+                    </button>
                 </span>
             </div>
         </form>
@@ -39,12 +43,12 @@
             return {
                 title: '',
                 message: '',
-                product: {
-                    name: '',
-                    description: '',
-                    price: 0,
-                    picture: ''
-                }
+                // product: {
+                //     name: '',
+                //     description: '',
+                //     price: 0,
+                //     picture: ''
+                // }
             };
         },
         
@@ -55,6 +59,10 @@
         methods: {
             onFileChange(e) {
                 this.product.picture = this.$refs.picture.files[0];
+            },
+
+            hideForm() {
+                EventBus.$emit('hide_form')
             },
 
             createProduct(formData) {
