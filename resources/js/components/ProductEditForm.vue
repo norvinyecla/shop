@@ -1,6 +1,6 @@
 <template>
     <div class='row'>
-        <h3>Creating product</h3>
+        <h3>Editing product</h3>
         <form action="#" enctype="multipart/form-data" @submit.prevent="saveProduct()">
             <div class="input-group">
                 <fieldset>
@@ -21,7 +21,8 @@
                 </fieldset>
                 <span class="input-group-btn">
                     <button type="submit" class="btn btn-primary">
-                        <span>Create product</span>
+                        <span v-if="mode === 'edit'">Edit product</span>
+                        <span v-else>Create product</span>
                     </button>
 
                     <button type="reset" class="btn btn-secondary" @click="hideForm">
@@ -36,16 +37,11 @@
 <script>
     import { EventBus } from '../event-bus.js'
     export default {
+        props: [ 'product' ],
         data() {
             return {
                 title: '',
-                message: '',
-                product: {
-                    name: '',
-                    description: '',
-                    price: 0,
-                    picture: ''
-                }
+                message: ''
             };
         },
         
@@ -62,27 +58,22 @@
                 EventBus.$emit('hide_form')
             },
 
-            createProduct(formData) {
+            editProduct(formData) {
                 axios(
                     {
                         method: 'POST',
-                        url: 'api/add', 
+                        url: 'api/edit/' + this.product.id, 
                         data: formData,
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }
                     }
                 ).then((res) => {
-                        this.product.name = ''
-                        this.product.description = ''
-                        this.product.price = 0
-                        this.product.picture = null
-                        this.edit = false
-                        alert('Successfully added a product!')  
+                        alert('Successfully updated this product!')  
                         EventBus.$emit('refresh')
                     })
                     .catch((err) => {
-                        alert('Cannot add this product.')
+                        alert('Cannot edit this product.')
                         console.log(err)
                         // err.response.errors.forEach(function (item, index) {
                         //     console.log(item)
@@ -99,7 +90,7 @@
                 formData.append("description", this.product.description);
                 formData.append("picture", this.product.picture);
 
-                this.createProduct(formData)
+                this.editProduct(formData)
             }
         }
     }
