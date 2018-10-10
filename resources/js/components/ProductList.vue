@@ -48,8 +48,11 @@
                 </tr>
             </table>
         </div>
-        <div v-show="showForm">
-            <product-form v-bind:id="id" v-bind:mode="mode"></product-form>
+        <div v-show="showForm && mode == 'add'">
+            <product-form></product-form>
+        </div>
+        <div v-show="showForm && mode == 'edit'">
+            <product-edit-form v-bind:target="product"></product-edit-form>
         </div>
     </div>
 </template>
@@ -63,6 +66,7 @@
                 list: [],
                 showForm: false,
                 id: 0,
+                product: {}
             }
         },
         
@@ -92,15 +96,18 @@
             },
 
             editProduct(id) {
-                this.mode = "edit"
-                this.showForm = !this.showForm
-                this.id = id
                 axios.get('api/' + id).then((res) => {
-                    console.log(res.data.id)
-                    console.log(res.data.name)
-                    console.log(res.data.price)
-                    console.log(res.data.description)
-                    console.log(res.data.picture)
+                    var product = {
+                        'id': res.data.id,
+                        'name': res.data.name,
+                        'price': res.data.price,
+                        'description': res.data.description,
+                        'picture': res.data.picture
+                    }
+                    this.mode = "edit"
+                    this.showForm = !this.showForm
+                    this.id = id
+                    this.product = product
 
                 });
             },
