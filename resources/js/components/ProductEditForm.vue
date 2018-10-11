@@ -15,14 +15,10 @@
                     <label>Price</label>
                     <input v-model="product.price" type="text" name="price" class="form-control">
                 </fieldset>
-                <fieldset>
-                    <label>Picture</label>
-                    <input v-on:change=onFileChange type="file" ref="picture" name="picture" class="form-control" autofocus>
-                </fieldset>
+                
                 <span class="input-group-btn">
                     <button type="submit" class="btn btn-primary">
-                        <span v-if="mode === 'edit'">Edit product</span>
-                        <span v-else>Create product</span>
+                        <span>Edit product</span>
                     </button>
 
                     <button type="reset" class="btn btn-secondary" @click="hideForm">
@@ -61,8 +57,8 @@
             editProduct(formData) {
                 axios(
                     {
-                        method: 'POST',
-                        url: 'api/edit/' + this.product.id, 
+                        method: 'PUT',
+                        url: 'api/update/' + this.product.id, 
                         data: formData,
                         headers: {
                             'Content-Type': 'multipart/form-data'
@@ -73,23 +69,15 @@
                         EventBus.$emit('refresh')
                     })
                     .catch((err) => {
-                        alert('Cannot edit this product.')
-                        console.log(err)
-                        // err.response.errors.forEach(function (item, index) {
-                        //     console.log(item)
-                        // })
-                        // console.log(warning)
-                        
+                        alert('Cannot edit this product. Please check your values')
                     })
             },
  
-            saveProduct(formData) {
+            saveProduct(product) {
                 var formData = new FormData()
-                formData.append("name", this.product.name); 
-                formData.append("price", this.product.price);
-                formData.append("description", this.product.description);
-                formData.append("picture", this.product.picture);
-
+                formData.append("name", this.product.name)
+                formData.append("price", this.product.price)
+                formData.append("description", this.product.description)
                 this.editProduct(formData)
             }
         }

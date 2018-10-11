@@ -52,7 +52,7 @@
             <product-form></product-form>
         </div>
         <div v-show="showForm && mode == 'edit'">
-            <product-edit-form v-bind:target="product"></product-edit-form>
+            <product-edit-form v-bind:product="product"></product-edit-form>
         </div>
     </div>
 </template>
