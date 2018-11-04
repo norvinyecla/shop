@@ -47409,6 +47409,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -47433,16 +47444,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$on('hide_form', function () {
             _this.showForm = false;
+            _this.product.name = '';
+            _this.product.description = '';
+            _this.product.price = 0;
+            _this.product.picture = false;
         });
     },
 
 
     methods: {
-        fetchProductList: function fetchProductList() {
+        fetchProductList: function fetchProductList(target) {
             var _this2 = this;
 
-            axios.get('products').then(function (res) {
+            if (!target) {
+                target = 'products';
+            }
+            axios.get(target).then(function (res) {
                 _this2.list = res.data.data;
+
+                // pagination
+                _this2.currentPage = res.data.current_page;
+                _this2.firstPageUrl = res.data.first_page_url;
+                _this2.prevPageUrl = res.data.prev_page_url;
+                _this2.nextPageUrl = res.data.next_page_url;
+                _this2.lastPageUrl = res.data.last_page_url;
+                _this2.from = res.data.from;
+                _this2.to = res.data.to;
+                _this2.total = res.data.total;
             });
         },
         toggleCreateForm: function toggleCreateForm() {
@@ -47595,6 +47623,75 @@ var render = function() {
             ],
             2
           )
+    ]),
+    _vm._v(" "),
+    _c("div", [
+      _c("span", [
+        _vm._v(
+          "Showing " +
+            _vm._s(_vm.from) +
+            " to " +
+            _vm._s(_vm.to) +
+            " of " +
+            _vm._s(_vm.total)
+        )
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("span", [
+        _c(
+          "a",
+          {
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                _vm.fetchProductList(_vm.firstPageUrl)
+              }
+            }
+          },
+          [_vm._v("First")]
+        ),
+        _vm._v(" | \n            "),
+        _c(
+          "a",
+          {
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                _vm.fetchProductList(_vm.prevPageUrl)
+              }
+            }
+          },
+          [_vm._v("Previous")]
+        ),
+        _vm._v(" | \n            "),
+        _c(
+          "a",
+          {
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                _vm.fetchProductList(_vm.nextPageUrl)
+              }
+            }
+          },
+          [_vm._v("Next")]
+        ),
+        _vm._v(" | \n            "),
+        _c(
+          "a",
+          {
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                _vm.fetchProductList(_vm.lastPageUrl)
+              }
+            }
+          },
+          [_vm._v("Last")]
+        )
+      ])
     ]),
     _vm._v(" "),
     _c(
@@ -47766,7 +47863,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.product.name = '';
                 _this.product.description = '';
                 _this.product.price = 0;
-                _this.product.picture = null;
+                _this.product.picture = false;
                 _this.edit = false;
                 alert('Successfully added a product!');
                 __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$emit('refresh');
@@ -47782,13 +47879,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 url: 'api/update/' + id,
                 data: formObj,
                 headers: {
-                    // 'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data'
                 }
             }).then(function (res) {
                 _this2.product.name = '';
                 _this2.product.description = '';
                 _this2.product.price = 0;
-                _this2.product.picture = null;
+                _this2.product.picture = false;
                 _this2.edit = false;
                 alert('Successfully edited a product!');
                 __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$emit('refresh');

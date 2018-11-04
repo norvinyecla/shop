@@ -73,7 +73,7 @@
                         this.product.name = ''
                         this.product.description = ''
                         this.product.price = 0
-                        this.product.picture = null
+                        this.product.picture = false
                         this.edit = false
                         alert('Successfully added a product!')
                         EventBus.$emit('refresh')
@@ -90,14 +90,14 @@
                         url: 'api/update/' + id,
                         data: formObj,
                         headers: {
-                            // 'Content-Type': 'multipart/form-data'
+                            'Content-Type': 'multipart/form-data'
                         }
                     }
                 ).then((res) => {
                         this.product.name = ''
                         this.product.description = ''
                         this.product.price = 0
-                        this.product.picture = null
+                        this.product.picture = false
                         this.edit = false
                         alert('Successfully edited a product!')  
                         EventBus.$emit('refresh')
