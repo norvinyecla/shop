@@ -1,8 +1,12 @@
 <template>
     <div class='row'>
-        <h3>Creating product</h3>
+        <h3>
+            <span v-if="mode == 'add'">Creating product</span>
+            <span v-else>Editing product</span>
+        </h3>
         <form action="#" enctype="multipart/form-data" @submit.prevent="saveProduct()">
             <div class="input-group">
+                <input type="hidden" ref="id" name="id" class="form-control" v-model="product.id">
                 <fieldset>
                     <label>Name</label>
                     <input v-model="product.name" type="text" name="name" class="form-control" autofocus>
@@ -15,13 +19,14 @@
                     <label>Price</label>
                     <input v-model="product.price" type="text" name="price" class="form-control">
                 </fieldset>
-                <fieldset>
+                <fieldset v-if="mode == 'add'">
                     <label>Picture</label>
                     <input v-on:change=onFileChange type="file" ref="picture" name="picture" class="form-control" autofocus>
                 </fieldset>
                 <span class="input-group-btn">
                     <button type="submit" class="btn btn-primary">
-                        <span>Create product</span>
+                        <span v-if="mode == 'add'">Create product</span>
+                        <span v-else>Edit product</span>
                     </button>
 
                     <button type="reset" class="btn btn-secondary" @click="hideForm">
@@ -36,17 +41,9 @@
 <script>
     import { EventBus } from '../event-bus.js'
     export default {
+        props: [ 'product', 'mode' ],
         data() {
-            return {
-                title: '',
-                message: '',
-                product: {
-                    name: '',
-                    description: '',
-                    price: 0,
-                    picture: ''
-                }
-            };
+
         },
         
         created() {
@@ -78,28 +75,50 @@
                         this.product.price = 0
                         this.product.picture = null
                         this.edit = false
-                        alert('Successfully added a product!')  
+                        alert('Successfully added a product!')
                         EventBus.$emit('refresh')
                     })
                     .catch((err) => {
                         alert('Cannot add this product.')
-                        console.log(err)
-                        // err.response.errors.forEach(function (item, index) {
-                        //     console.log(item)
-                        // })
-                        // console.log(warning)
-                        
+                    })
+            },
+
+            editProduct(id, formObj) {
+                axios(
+                    {
+                        method: 'PUT',
+                        url: 'api/update/' + id,
+                        data: formObj,
+                        headers: {
+                            // 'Content-Type': 'multipart/form-data'
+                        }
+                    }
+                ).then((res) => {
+                        this.product.name = ''
+                        this.product.description = ''
+                        this.product.price = 0
+                        this.product.picture = null
+                        this.edit = false
+                        alert('Successfully edited a product!')  
+                        EventBus.$emit('refresh')
+                    })
+                    .catch((err) => {
+                        alert('Cannot edit this product.')
                     })
             },
  
-            saveProduct(formData) {
+            saveProduct() {
                 var formData = new FormData()
                 formData.append("name", this.product.name); 
                 formData.append("price", this.product.price);
-                formData.append("description", this.product.description);
-                formData.append("picture", this.product.picture);
+                formData.append("description", this.product.description)
 
-                this.createProduct(formData)
+                if (this.mode == 'add') {
+                    formData.append("picture", this.product.picture)
+                    this.createProduct(formData)
+                } else {
+                    this.editProduct(this.product.id, formData)
+                }
             }
         }
     }
