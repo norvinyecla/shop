@@ -1,4 +1,4 @@
-    <template>
+<template>
     <div>
         <button @click="toggleCreateForm()">Create</button>
         <div class='row'>
@@ -48,6 +48,17 @@
                 </tr>
             </table>
         </div>
+        <div>
+            <span>Showing {{ from }} to {{ to }} of {{ total }}</span>
+            <br>
+            <span>
+                <a href="#" @click="fetchProductList(firstPageUrl)">First</a> | 
+                <a href="#" @click="fetchProductList(prevPageUrl)">Previous</a> | 
+                <a href="#" @click="fetchProductList(nextPageUrl)">Next</a> | 
+                <a href="#" @click="fetchProductList(lastPageUrl)">Last</a>
+            </span>
+            
+        </div>
         <div v-show="showForm">
             <product-form v-bind:product="product" v-bind:mode="mode"></product-form>
         </div>
@@ -77,13 +88,30 @@
 
             EventBus.$on('hide_form', () => {
                 this.showForm = false
+                this.product.name = ''
+                this.product.description = ''
+                this.product.price = 0
+                this.product.picture = false
             })
         },
         
         methods: {
-            fetchProductList() {
-                axios.get('products').then((res) => {
+            fetchProductList(target) {
+                if (!target) {
+                    target = 'products'
+                }
+                axios.get(target).then((res) => {
                     this.list = res.data.data
+
+                    // pagination
+                    this.currentPage = res.data.current_page
+                    this.firstPageUrl = res.data.first_page_url
+                    this.prevPageUrl = res.data.prev_page_url
+                    this.nextPageUrl = res.data.next_page_url
+                    this.lastPageUrl = res.data.last_page_url
+                    this.from = res.data.from
+                    this.to = res.data.to
+                    this.total = res.data.total
                 });
             },
 

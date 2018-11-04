@@ -17,7 +17,7 @@ class ProductController extends Controller
     public function index(Request $request) 
     {
         $sortBy = $request->input('sort_by') ?? 'id';
-        $sortDirection = $request->input('order') ?? 'asc';
+        $sortDirection = $request->input('order') ?? 'desc';
         
         $products = DB::table('products')->orderBy($sortBy, $sortDirection)
             ->paginate(10);
