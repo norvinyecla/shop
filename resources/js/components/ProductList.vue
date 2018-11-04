@@ -24,35 +24,32 @@
                         Action
                     </th>
                 </tr>
-                <tr class="list-group-item" v-for="(product, index) in list" :key="index">
+                <tr class="list-group-item" v-for="(productObj, index) in list" :key="index">
                     <td style="border:1px solid black">
-                        {{ product.id }}
+                        {{ productObj.id }}
                     </td>
                     <td style="border:1px solid black">
-                        {{ product.name }}
+                        {{ productObj.name }}
                     </td>
                     <td style="border:1px solid black">
-                        {{ product.picture }}
+                        {{ productObj.picture }}
                     </td>
                     <td style="border:1px solid black">
-                        {{ product.price }}
+                        {{ productObj.price }}
                     </td>
                     <td style="border:1px solid black">
-                        {{ product.description }}
+                        {{ productObj.description }}
                     </td>
                     <td style="border:1px solid black">
-                        <button @click="viewProduct(product.id)" class="btn btn-danger btn-xs pull-right">View</button>
-                        <button @click="editProduct(product.id)" class="btn btn-danger btn-xs pull-right">Edit</button>
-                        <button @click="deleteProduct(product.id)" class="btn btn-danger btn-xs pull-right">Delete</button>
+                        <button @click="viewProduct(productObj.id)" class="btn btn-danger btn-xs pull-right">View</button>
+                        <button @click="editProduct(productObj)" class="btn btn-danger btn-xs pull-right">Edit</button>
+                        <button @click="deleteProduct(productObj.id)" class="btn btn-danger btn-xs pull-right">Delete</button>
                     </td>
                 </tr>
             </table>
         </div>
-        <div v-show="showForm && mode == 'add'">
-            <product-form></product-form>
-        </div>
-        <div v-show="showForm && mode == 'edit'">
-            <product-edit-form v-bind:product="product"></product-edit-form>
+        <div v-show="showForm">
+            <product-form v-bind:product="product" v-bind:mode="mode"></product-form>
         </div>
     </div>
 </template>
@@ -95,21 +92,13 @@
                 this.mode = "add"
             },
 
-            editProduct(id) {
-                axios.get('api/' + id).then((res) => {
-                    var product = {
-                        'id': res.data.id,
-                        'name': res.data.name,
-                        'price': res.data.price,
-                        'description': res.data.description,
-                        'picture': res.data.picture
-                    }
-                    this.mode = "edit"
-                    this.showForm = !this.showForm
-                    this.id = id
-                    this.product = product
-
-                });
+            editProduct(product) {
+                this.showForm = true
+                this.mode = "edit"
+                this.product.id = product.id
+                this.product.name = product.name
+                this.product.price = product.price
+                this.product.description = product.description
             },
 
             viewProduct(id) {
