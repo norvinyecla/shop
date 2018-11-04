@@ -40,7 +40,6 @@ class ProductController extends Controller
         );
     }
 
-
     public function create()
     {
         return view('product.create');
@@ -56,16 +55,19 @@ class ProductController extends Controller
         );
     }
 
-    public function save(Request $request, Product $product)
+    public function store(Request $request, Product $product, string $type = null)
     {
-        $validatedData = $request->validate(
-            [
-                'name' => 'required|string|max:255',
-                'description' => 'required|string|max:255',
-                'price' => 'required|integer',
-                'picture' => 'required|mimes:jpg,jpeg,gif,png'
-            ]
-        );
+        $rules = [
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'price' => 'required|integer',
+        ];
+
+        if ($type == 'add') {
+            $rules['picture'] = 'required|mimes:jpg,jpeg,gif,png';
+        }
+
+        $validatedData = $request->validate($rules);
 
         $product->name = $request->name;
         $product->description = $request->description;
@@ -82,13 +84,13 @@ class ProductController extends Controller
 
     public function add(Request $request)
     {
-        return $this->save($request, new Product);
+        return $this->store($request, new Product, 'add');
     }
 
     public function update(Request $request, int $id)
     {
         $product = Product::findOrFail($id);
-        return $this->save($request, $product);
+        return $this->store($request, $product, 'edit');
     }
 
     public function delete(int $id)
